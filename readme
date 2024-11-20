@@ -1,0 +1,68 @@
+FUSION Maps Application
+
+OVERVIEW
+The FUSION Maps Application is a Flask-based web application that allows users to search for nearby places based on categories such as grocery stores, schools, parks, movie theatres, and more. The application is designed to use Google OAuth2 authentication for login and Google Maps APIs to search for locations with detailed information about locations, and integrates with Google Maps to provide directions. Users can mark their favorite places and see these results when they visit the wishlist page.
+
+FEATURES
+User login via Google OAuth2
+Location-based search using Google Places API
+Wishlist management for favorite places
+Directions linking directly to Google Maps
+Persistent session management
+
+Prerequisites
+Python (Flask framework)
+Google Cloud account with enabled Places API, Google Maps API (GOOGLE_API_KEY)
+Google OAuth2 credentials (Client ID and Client Secret)
+
+SETUP INSTRUCTIONS
+1. Clone the repository:
+git clone <repository-url>
+cd fusion-maps-app
+
+2. Create and activate a virtual environment:
+python3 -m venv venv
+source venv/bin/activate   # On Windows use: venv\Scripts\activate
+
+3. Install the dependencies:
+pip install -r requirements.txt
+
+4. Enable the API Keys in google cloud console
+Maps Javascript API, Maps Embed API, People API, Places API, Places Insights API, Google Maps API, Golocation API, GeoCoding API, Directions API, Aerial View API, Cloud Vision API, Distance Matrix API, Map Tiles API, Address Validation API, Time Zone API, Routes API,  Navigation SDK 
+
+5. Setup the billing account with new project or with the existing project
+
+6. Set up environment 
+SECRET_KEY: Flask secret key for session management.
+GOOGLE_CLIENT_ID: Your Google OAuth client ID.
+GOOGLE_CLIENT_SECRET: Your Google OAuth client secret.
+GOOGLE_MAPS_API_KEY: Your Google Places API key.
+
+Download 
+API Keys .json file, OAuth 2.0 Client .json file where you have Client ID, and Client Secret  
+
+7. Set up another API Key without any restrictions named as Maps. This key is the GOOGLE_MAPS_API_KEY
+
+8. Place this in app.py
+>> import secrets
+>> print(secrets.token_hex(32))
+
+To get the secret key
+
+9. Run the application:
+>>export SECRET_KEY="your_secret_key"
+>>export GOOGLE_CLIENT_ID="your_google_client_id"
+>>export GOOGLE_CLIENT_SECRET="your_google_client_secret"
+>>export GEMINI_API_KEY="your_gemini_api_key"
+>>export GOOGLE_MAPS_API_KEY="your_google_maps_api_key"
+>>export FLASK_APP=app.py
+>>export FLASK_ENV=development
+>> flask run
+Access the application at http://127.0.0.1:5000 in your web browser.
+
+USAGE
+1. Login: Users must log in via Google to access the application.
+2. Search for Nearby Places: Enter your location and select a category to search for nearby places.
+3. Add to Wishlist: Add your favorite locations to the wishlist for easy access.
+4. View Wishlist: View and manage the wishlist of saved places.
+5. Get Directions: Use the "Directions" link to open Google Maps and get directions to a selected location.

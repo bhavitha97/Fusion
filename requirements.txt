@@ -1,0 +1,22 @@
+>> import secrets
+>> print(secrets.token_hex(32))
+
+
+>>export FLASK_APP=app.py
+>>export FLASK_ENV=development
+>>export SECRET_KEY="37f39211be3d6290112334dc1f0553b28fe57fc285555a05a6e2c2127f9f6fb7" 
+>>export GOOGLE_CLIENT_ID="your_google_client_id"
+>>export GOOGLE_CLIENT_SECRET="your_google_client_secret"
+>>export GEMINI_API_KEY="your_gemini_api_key"
+>>export GOOGLE_MAPS_API_KEY="your_google_maps_api_key"
+
+Flask==2.0.3
+Flask-Session==0.4.0
+Flask-Cors==3.0.10
+requests==2.26.0
+google-auth==2.3.3
+google-auth-oauthlib==0.4.6
+authlib==1.1.0
+python-dotenv==0.19.1
+google-api-python-client==2.30.0
+google-cloud-vision==2.7.2

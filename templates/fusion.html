@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUSION</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Playfair+Display:wght@400;700&display=swap">
+    <style>
+        body, html {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f6ef;
+            color: #000000;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8f6ef;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ccc;
+            z-index: 10;
+            position: relative;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #000000;
+            padding: 0 15px;
+            font-size: 16px;
+            font-family: 'Playfair Display', serif;
+            transition: color 0.3s;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .navbar a:hover {
+            color: #555555;
+        }
+        .logo {
+            font-weight: 600;
+            font-size: 34px;
+            line-height: 1.7;
+            font-weight: 500;
+            font-family: 'Playfair Display', serif;
+            transform: scaleY(1.06);
+            transform-origin: bottom;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            justify-content: space-between; 
+            width: 96%;
+            padding: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 600;
+            max-width: 2000px;
+            margin-left: 5px; 
+            margin-right: 5px;
+        }
+        .form-container {
+            background-color: #E6E4E8;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        form label {
+            margin-top: 5px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        form input, form select, form button {
+            margin-top: 5px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Playfair Display', serif;
+            margin-right: 10px;
+        }
+        form input {
+            width: 200px;
+        }
+        form button {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        form button:hover {
+            background-color: #555;
+        }
+        .main-container {
+            display: flex;
+            height: calc(100vh - 100px); 
+        }
+        .search-container {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 10px; 
+        }
+
+        .pac-container {
+            z-index: 11; 
+            position: relative;
+            top: 100%; 
+            left: 0;
+            right: 0;
+        }
+        #map-container {
+            height: 100%;
+            flex: 1;
+            position: relative;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            border-right: 2px solid #ddd;
+        }
+        #results-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0px;
+            left: 0;
+            top: 0;
+            background-color: #ffffff;
+        }
+        .output-container {
+            margin-top: 0px;
+            display: flex;
+            justify-content: space-between;
+            gap: 0px;
+            width: 50%;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        .output-list {
+            width: 97%;
+            max-height: 100%;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .output-list h2 {
+            margin-top: 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .output-list p {
+            font-size: 16px;
+            margin: 10px 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        .output-list p:last-child {
+            border-bottom: none;
+        }
+        .search-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .search-item.selected {
+            background-color: #E6E4E8;
+            border: 2px solid #dddddd;
+        }
+
+        .search-item .name-rating {
+            flex: 3;
+        }
+
+        .search-item .status {
+            flex: 1;
+            text-align: center;
+        }
+
+        .search-item .directions {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .navbar a.active {
+            color: #000000;  
+            font-weight: bold;  
+        }
+
+        .sitefooter {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .sitefooter h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 500;
+            margin: 40px 0;
+        }
+        .sitefooter .footer {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 40px;
+        }
+        .sitefooter .footer a {
+            font-size: 20px;
+            font-weight: 500;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #545252;
+        }
+        .top-line {
+            border-top: 1px solid #ccc;
+            margin-top: 100px;
+            padding: 15px 40px;
+            width: 100vw;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">FUSION</div>
+        <div>
+            <a href="/fusion" class="{{ 'active' if active_page == 'fusion' else '' }}">Fusion</a>
+            <a href="/wishlist" class="{{ 'active' if active_page == 'wishlist' else '' }}">Wishlist</a>
+            <a href="/logout" id="logout-link">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="form-container">
+            <form id="fusionForm">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="Search location..." required>
+                <label for="category">Search Criteria</label>
+                <select id="category" name="category" required>
+                    <option value="Airports">Airports</option>
+                    <option value="Asian Grocery Stores">Asian Grocery Stores</option>
+                    <option value="ATM">ATM</option>
+                    <option value="Bakery">Bakery</option>
+                    <option value="Bank">Bank</option>
+                    <option value="Bar">Bar</option>
+                    <option value="Bicycle Store">Bicycle Store</option>
+                    <option value="Book Store">Book Store</option>
+                    <option value="Bowling Alley">Bowling Alley</option>
+                    <option value="Beauty Salon">Beauty Salon</option>
+                    <option value="Busstops">Busstops</option>
+                    <option value="Cafe">Cafe</option>
+                    <option value="Campground">Campground</option>
+                    <option value="Car Dealer">Car Dealer</option>
+                    <option value="Car Rental">Car Rental</option>
+                    <option value="Car Repair">Car Repair</option>
+                    <option value="Car Wash">Car Wash</option>
+                    <option value="Casino">Casino</option>
+                    <option value="Cemetery">Cemetery</option>
+                    <option value="Church">Church</option>
+                    <option value="City Hall">City Hall</option>
+                    <option value="Clothing Store">Clothing Store</option>
+                    <option value="Colleges">Colleges</option>
+                    <option value="Convenience Store">Convenience Store</option>
+                    <option value="Courthouse">Courthouse</option>
+                    <option value="Dentist">Dentist</option>
+                    <option value="Department Store">Department Store</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Electrician">Electricians</option>
+                    <option value="Electronic Stores">Electronic Stores</option>
+                    <option value="Embassy">Embassy</option>
+                    <option value="Fire Station">Fire Station</option>
+                    <option value="Florist">Florist</option>
+                    <option value="Furniture Stores">Furniture Stores</option>
+                    <option value="Gas Stations">Gas Stations</option>
+                    <option value="Grocery Stores">Grocery Stores</option>
+                    <option value="Gym">Gym</option>
+                    <option value="Hair Care">Hair Care</option>
+                    <option value="Hardware Store">Hardware Store</option>
+                    <option value="Temples">Hindu Temple</option>
+                    <option value="Home Goods Store">Home Goods Store</option>
+                    <option value="Hospitals">Hospitals</option>
+                    <option value="Indian Grocery Stores">Indian Grocery Stores</option>
+                    <option value="Insurance Agency">Insurance Agency</option>
+                    <option value="Interior Designers">Interior Designers</option>
+                    <option value="Jewelry Store">Jewelry Store</option>
+                    <option value="Laundry">Laundry</option>
+                    <option value="Lawyer">Lawyer</option>
+                    <option value="Library">Library</option>
+                    <option value="Local Government Office">Local Government Office</option>
+                    <option value="Mosque">Mosque</option>
+                    <option value="Movie Rental">Movie Rental</option>
+                    <option value="Movie Theatres">Movie Theatres</option>
+                    <option value="Moving Company">Moving Company</option>
+                    <option value="Museum">Museum</option>
+                    <option value="Parks">Parks</option>
+                    <option value="Parking">Parking</option>
+                    <option value="Pet Store">Pet Store</option>
+                    <option value="Pharmacy Stores">Pharmacy Store</option>
+                    <option value="Physiotherapist">Physiotherapist</option>
+                    <option value="Police">Police</option>
+                    <option value="Post Office">Post Office</option>
+                    <option value="Primary School">Primary School</option>
+                    <option value="Restaurants">Restaurants</option>
+                    <option value="RV Park">RV Park</option>
+                    <option value="School">School</option>
+                    <option value="Secondary School">Secondary School</option>
+                    <option value="Shoe Store">Shoe Store</option>
+                    <option value="Shopping Malls">Shopping Malls</option>
+                    <option value="Spa">Spa</option>
+                    <option value="Stadium">Stadium</option>
+                    <option value="Store">Store</option>
+                    <option value="Subway Station">Subway Station</option>
+                    <option value="Supermarket">Supermarket</option>
+                    <option value="Taxi Stand">Taxi Stand</option>
+                    <option value="Things To Do">Things To Do</option>
+                    <option value="Tourist Attraction">Tourist Attraction</option>
+                    <option value="Train Station">Train Station</option>
+                    <option value="Transit Station">Transit Station</option>
+                    <option value="Travel Agency">Travel Agency</option>
+                    <option value="University">University</option>
+                    <option value="Veterinary Care">Veterinary Care</option>
+                    <option value="Zoo">Zoo</option>
+                </select>
+
+                <label for="radiusRange">Search Radius (miles)</label>
+                <input type="range" id="radiusRange" name="radius" min="0" max="100" value="0" oninput="updateRadiusValue()">
+                <span id="radiusValue">0 miles</span>
+                
+                <button type="submit">Search</button>
+                <input type="hidden" id="lat" name="lat">
+                <input type="hidden" id="lng" name="lng">
+            </form>
+        </div>
+        <div class="main-container">
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+            <div id="results-container">
+                <div class="output-list" id="output">
+                    <h2>Search Results</h2>     
+                </div>
+            </div>
+        </div>
+    <div class="sitefooter">
+        <div class="top-line"></div>
+        <h2>FUSION</h2>
+        <div class="footer">
+            <a href="/fusion">Fusion</a>
+            <a href="/wishlist">Wishlist</a>
+        </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByWEcINYXqhldJoNNeHD6rMEYiv_uNJI0&libraries=places&callback=initMap" async defer></script>
+
+    <script>
+        let map, marker, autocomplete, directionsService, directionsRenderer;
+        let markers = []; 
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: { lat: 34.0754, lng: -84.2941 } 
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: "#0000ff",
+                    strokeOpacity: 0.7,
+                    strokeWeight: 6
+                } 
+            });
+
+            const locationInput = document.getElementById('location');
+            autocomplete = new google.maps.places.Autocomplete(locationInput);
+            autocomplete.bindTo('bounds', map);
+
+            autocomplete.addListener('place_changed', function () {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    console.error("No details available for the input: '" + place.name + "'");
+                    return;
+                }
+
+                const userLocation = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng()
+                };
+
+                map.setCenter(userLocation);
+                map.setZoom(12);
+
+                if (marker) {
+                    marker.setMap(null);
+                }
+                
+                marker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    icon: {
+                        url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                    }
+                });
+
+                document.getElementById('lat').value = userLocation.lat;
+                document.getElementById('lng').value = userLocation.lng;
+            });
+        }
+
+        function updateRadiusValue() {
+            const radiusValue = document.getElementById('radiusRange').value;
+            document.getElementById('radiusValue').textContent = `${radiusValue} miles`;
+        }
+
+        document.getElementById('fusionForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const lat = document.getElementById('lat').value;
+            const lng = document.getElementById('lng').value;
+            const category = document.getElementById('category').value;
+            const radius = document.getElementById('radiusRange').value;
+
+            if (!lat || !lng) {
+                alert('Please select a valid location.');
+                return;
+            }
+
+            clearMarkers();
+
+            fetch('/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ lat, lng, category, radius })
+            })
+
+            .then(response => response.json())
+            .then(data => {
+                console.log('Search data:', data); 
+                const resultContainer = document.getElementById('output');
+                resultContainer.innerHTML = `<h2>Search Results</h2>`;
+    
+                if (data.results && data.results.length > 0) {
+                    data.results.forEach((result, index) => {
+                        const status = result.opening_hours && result.opening_hours.open_now ? "Open" : "Closed";
+                        const statusColor = status === "Open" ? "green" : "red";
+                        resultContainer.innerHTML += `
+                            <div class="search-item" data-index="${index}">
+                                    <div class="name-rating">
+                                        <strong>${result.name}</strong><br>
+                                        Rating: ${result.rating} &#9733;<br>
+                                        Address: ${result.address}
+                                    </div>
+                                    <div class="status" style="color: ${statusColor};">
+                                        ${status}
+                                    </div>
+                                    <div class="directions">
+                                        <a href="https://www.google.com/maps/dir/?api=1&destination=${result.lat},${result.lng}" target="_blank">Directions</a>
+                                    <div class="like-btn" data-index="${index}">&#9829;</div>
+                                </div>`;
+                        addMarker(result);
+                    });
+
+                    document.querySelectorAll('.search-item').forEach(item => {
+                        item.addEventListener('click', function () {
+                            const index = this.getAttribute('data-index');
+                            const selectedResult = data.results[index];
+                            clearSelectedItems();
+                            this.classList.add('selected');
+                            showDirections(marker.getPosition(), { lat: selectedResult.lat, lng: selectedResult.lng });
+                        });
+                    });
+
+                    document.querySelectorAll('.like-btn').forEach(button => {
+                        button.addEventListener('click', function(event) {
+                            event.stopPropagation(); 
+                            const index = this.getAttribute('data-index');
+                            const selectedResult = data.results[index];
+
+                            if (this.style.color === 'red') {
+                                this.style.color = '#333';  
+                            } else {
+                                this.style.color = 'red';  
+                                addToWishlist(selectedResult);
+                            }
+                        });
+                    });
+                    saveState();
+                } else {
+                    resultContainer.innerHTML += `<p>No ${category} found in this location.</p>`;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function addToWishlist(item) {
+            fetch('/add_to_wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: item.name,
+                    rating: item.rating,
+                    address: item.address,
+                    lat: item.lat,
+                    lng: item.lng
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    console.log("Item added to wishlist:", item);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function addMarker(place) {
+            const marker = new google.maps.Marker({
+                position: { lat: place.lat, lng: place.lng },
+                map: map,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                },
+                title: place.name
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<strong>${place.name}</strong><br>${place.address}`
+            });
+
+            marker.addListener('click', () => {
+                markers.forEach(m => m.infoWindow && m.infoWindow.close());
+                infoWindow.open(map, marker);
+            });
+
+            marker.infoWindow = infoWindow;
+            markers.push(marker); 
+        }
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('like-btn')) {
+                event.target.style.color = event.target.style.color === 'red' ? '#ff6666' : 'red';
+            }
+        });
+
+        function clearMarkers() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = []; 
+        }
+
+        function showDirections(start, end) {
+            const request = {
+                origin: start,
+                destination: end,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+
+            directionsService.route(request, function (result, status) {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsRenderer.setDirections(result); 
+                } else {
+                    alert('Could not display directions due to: ' + status);
+                }
+            });
+        }
+
+        function clearSelectedItems() {
+            document.querySelectorAll('.search-item.selected').forEach(item => {
+                item.classList.remove('selected');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('logout-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch('/logout', {
+                    method: 'GET',
+                })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Playfair+Display:wght@400;700&display=swap">
+    <style>
+        body, html {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f6ef;
+            color: #000000;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8f6ef;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ccc;
+            z-index: 10;
+            position: relative;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #000000;
+            padding: 0 15px;
+            font-size: 16px;
+            font-family: 'Playfair Display', serif;
+            transition: color 0.3s;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .navbar a:hover {
+            color: #555555;
+        }
+        .logo {
+            font-weight: 600;
+            font-size: 34px;
+            line-height: 1.7;
+            font-weight: 500;
+            font-family: 'Playfair Display', serif;
+            transform: scaleY(1.06);
+            transform-origin: bottom;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            justify-content: space-between; 
+            width: 96%;
+            padding: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 600;
+            max-width: 2000px;
+            margin-left: 5px; 
+            margin-right: 5px;
+        }    
+        .wishlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .wishlist-item .name-rating {
+            flex: 3;
+        }
+        .wishlist-item .remove-btn {
+            background-color: #ff6666;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .wishlist-item .remove-btn:hover {
+            background-color: #ff3333;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .sitefooter {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .sitefooter h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 500;
+            margin: 40px 0;
+        }
+        .sitefooter .footer {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 40px;
+        }
+        .sitefooter .footer a {
+            font-size: 20px;
+            font-weight: 500;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #545252;
+        }
+        .top-line {
+            border-top: 1px solid #ccc;
+            margin-top: 100px;
+            padding: 15px 40px;
+            width: 100vw;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">FUSION</div>
+        <div>
+            <a href="/fusion" class="{{ 'active' if active_page == 'fusion' else '' }}">Fusion</a>
+            <a href="/wishlist" class="{{ 'active' if active_page == 'wishlist' else '' }}">Wishlist</a>
+            <a href="/logout" id="logout-link">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Wishlist</h2>
+        {% if wishlist_items %}
+            <ul>
+                {% for item in wishlist_items %}
+                    <li class="wishlist-item">
+                        <strong>{{ item.name }}</strong><br>
+                        Rating: {{ item.rating }}<br>
+                        Address: {{ item.address }}<br>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ item.lat }},{{ item.lng }}" target="_blank">Directions</a>
+                        <button class="remove-btn" data-name="{{ item.name }}">Remove</button>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Your wishlist is empty.</p>
+        {% endif %}
+    </div>
+    <div class="sitefooter">
+        <div class="top-line"></div>
+        <h2>FUSION</h2>
+        <div class="footer">
+            <a href="/fusion">Fusion</a>
+            <a href="/wishlist">Wishlist</a>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('remove-btn')) {
+                    const itemName = event.target.getAttribute('data-name');
+                    fetch('/remove_from_wishlist', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name: itemName })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            console.log("Item removed from wishlist:", itemName);
+                            location.reload();
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
