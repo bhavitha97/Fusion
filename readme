@@ -1,7 +1,10 @@
 FUSION Maps Application
 
 OVERVIEW
-The FUSION Maps Application is a Flask-based web application that allows users to search for nearby places based on categories such as grocery stores, schools, parks, movie theatres, and more. The application is designed to use Google OAuth2 authentication for login and Google Maps APIs to search for locations with detailed information about locations, and integrates with Google Maps to provide directions. Users can mark their favorite places and see these results when they visit the wishlist page.
+The FUSION Maps Application is a Flask-based web application that allows users to search for nearby places based on categories 
+such as grocery stores, schools, parks, movie theatres, and more. The application is designed to use Google OAuth2 authentication 
+for login and Google Maps APIs to search for locations with detailed information about locations, and integrates with Google Maps 
+to provide directions. Users can mark their favorite places and see these results when they visit the wishlist page.
 
 FEATURES
 User login via Google OAuth2
@@ -27,8 +30,13 @@ cd fusion-maps-app
 3. Install the dependencies:
 >> pip install -r requirements.txt
 
-4. Enable the API Keys in google cloud console
-Maps Javascript API, Maps Embed API, People API, Places API, Places Insights API, Google Maps API, Golocation API, GeoCoding API, Directions API, Aerial View API, Cloud Vision API, Distance Matrix API, Map Tiles API, Address Validation API, Time Zone API, Routes API,  Navigation SDK 
+4. Enable the API Keys 
+Gemini API Guide (for GenAI Application)
+- Create Gemini API get the key connect this with the billing account to the google cloud console
+Google cloud console
+- Enable Maps Javascript API, Maps Embed API, People API, Places API, Places Insights API, Google Maps API, Golocation API, 
+GeoCoding API, Directions API, Aerial View API, Cloud Vision API, Distance Matrix API, Map Tiles API, Address Validation API, 
+Time Zone API, Routes API,  Navigation SDK 
 
 5. Setup the billing account with new project or with the existing project
 
