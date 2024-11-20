@@ -21,11 +21,11 @@ git clone <repository-url>
 cd fusion-maps-app
 
 2. Create and activate a virtual environment:
-python3 -m venv venv
-source venv/bin/activate   # On Windows use: venv\Scripts\activate
+>> python3 -m venv venv
+>> source venv/bin/activate   # On Windows use: >> venv\Scripts\activate
 
 3. Install the dependencies:
-pip install -r requirements.txt
+>> pip install -r requirements.txt
 
 4. Enable the API Keys in google cloud console
 Maps Javascript API, Maps Embed API, People API, Places API, Places Insights API, Google Maps API, Golocation API, GeoCoding API, Directions API, Aerial View API, Cloud Vision API, Distance Matrix API, Map Tiles API, Address Validation API, Time Zone API, Routes API,  Navigation SDK 
