@@ -14,14 +14,14 @@ from functools import wraps
 import requests
 from flask_cors import CORS
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gen-lang-client-0912025258-124b43640a5c.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'path_to_your_google_api_key'
 
 app = Flask(__name__)
 CORS(app)
 
 load_dotenv()
 
-credentials = service_account.Credentials.from_service_account_file('gen-lang-client-0912025258-124b43640a5c.json')
+credentials = service_account.Credentials.from_service_account_file('path_to_your_google_api_key')
 vision_client = vision.ImageAnnotatorClient(credentials=credentials)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -47,8 +47,8 @@ google = oauth.register(
     }
 )
 
-GEMINI_API_KEY = os.getenv('AIzaSyCq99h560G-7-1ZZOEHAPCZJiAsVrN7LVw')
-GOOGLE_MAPS_API_KEY = os.getenv('AIzaSyByWEcINYXqhldJoNNeHD6rMEYiv_uNJI0')
+GEMINI_API_KEY = os.getenv('your_gemini_api_key')
+GOOGLE_MAPS_API_KEY = os.getenv('your_maps_api_key')
 
 def login_required(f):
     @wraps(f)
@@ -228,7 +228,7 @@ def search():
 
     places_url = (
         f"https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-        f"?location={lat},{lng}&radius={int(radius_meters)}&type={types}&key={'AIzaSyByWEcINYXqhldJoNNeHD6rMEYiv_uNJI0'}"
+        f"?location={lat},{lng}&radius={int(radius_meters)}&type={types}&key={'your_maps_api_key'}"
     )
 
     if keyword:
